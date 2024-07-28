@@ -1,12 +1,10 @@
+import { createIssueSchema } from "@/app/issues/createIssueSchema";
 import prisma from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { NewLineKind } from "typescript";
-import { z } from 'zod'
 
-const createIssueSchema = z.object({
-    title : z.string().min(1).max(255),
-    description : z.string().min(3)
-})
+
+
 export async function POST(request:NextRequest){
     const body = await request.json();
     const validation = createIssueSchema.safeParse(body);
