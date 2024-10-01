@@ -13,7 +13,7 @@ const NavBar = () => {
     { label: "Issues", href: "/issues" },
   ];
   return (
-    <nav className="flex space-x-5 px-5 border-b mb-5 h-12 items-center bg-green-600">
+    <nav className="flex space-x-5 px-5 border-b mb-5 h-12 items-center bg-green-600 font-medium">
       <Link href="/">
         <FaBug color="white" />
       </Link>
@@ -23,7 +23,7 @@ const NavBar = () => {
             <Link
               className={classnames({
                 "text-white": currentPath === link.href,
-                "text-zinc-800": currentPath != link.href,
+                "text-green-200": currentPath != link.href,
                 "hover:text-white transition-colors": true,
               })}
               href={link.href}
