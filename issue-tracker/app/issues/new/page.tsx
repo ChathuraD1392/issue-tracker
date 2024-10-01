@@ -1,5 +1,12 @@
 "use client";
-import { Button, Callout, Text, TextArea, TextField } from "@radix-ui/themes";
+import {
+  Button,
+  Callout,
+  Spinner,
+  Text,
+  TextArea,
+  TextField,
+} from "@radix-ui/themes";
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import React, { useState } from "react";
@@ -10,6 +17,7 @@ import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createIssueSchema } from "@/app/validationSchema";
 import { z } from "zod";
+import ErrorMessage from "@/app/components/ErrorMessage";
 
 type IssueData = z.infer<typeof createIssueSchema>;
 
@@ -24,14 +32,18 @@ const NewIssuePage = () => {
   });
 
   const [error, setError] = useState("");
+  const [isSubmitting, setSubmitting] = useState(false);
   const router = useRouter();
 
   const onSubmit = async (data: FieldValues) => {
+    setSubmitting(true);
     try {
       await axios.post("/api/issues", data);
       router.push("/issues");
+      setSubmitting(false);
     } catch (err) {
       setError("An Unexpected Error Occured.");
+      setSubmitting(false);
     }
   };
   return (
@@ -49,11 +61,7 @@ const NewIssuePage = () => {
         <TextField.Root placeholder="Title" {...register("title")}>
           <TextField.Slot></TextField.Slot>
         </TextField.Root>
-        {errors.title && (
-          <Text color="red" as="p">
-            {errors.title.message}
-          </Text>
-        )}
+        <ErrorMessage children={errors.title?.message} />
         <Controller
           name="description"
           control={control}
@@ -61,12 +69,11 @@ const NewIssuePage = () => {
             <SimpleMDE placeholder="Description" {...field} />
           )}
         ></Controller>
-        {errors.description && (
-          <Text color="red" as="p">
-            {errors.description.message}
-          </Text>
-        )}
-        <Button>Submit New Issue</Button>
+        <ErrorMessage children={errors.description?.message} />
+        <Button disabled={isSubmitting}>
+          {isSubmitting && <Spinner />}
+          Submit New Issue
+        </Button>
       </form>
     </div>
   );
