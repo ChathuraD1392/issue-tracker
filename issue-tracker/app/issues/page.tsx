@@ -1,10 +1,6 @@
 import prisma from "@/prisma/client";
-import { Button, Table } from "@radix-ui/themes";
-import Link from "next/link";
-import React from "react";
-import StatusBagde from "../components/StatusBadge";
-import delay from "delay";
-import Skeleton from "react-loading-skeleton";
+import { Table } from "@radix-ui/themes";
+import { NextLink, StatusBagde } from "@/app/components";
 import IssueActionButton from "./IssueActionButton";
 
 const IssuePage = async () => {
@@ -21,9 +17,6 @@ const IssuePage = async () => {
               Status
             </Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell className="hidden md:table-cell">
-              Description
-            </Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className="hidden md:table-cell">
               Created At
             </Table.ColumnHeaderCell>
           </Table.Row>
@@ -33,16 +26,13 @@ const IssuePage = async () => {
             <Table.Row key={index}>
               <Table.Cell>{++index}</Table.Cell>
               <Table.Cell>
-                <Link href={`/issues/${issue.id}`}> {issue.title} </Link>
+                <NextLink href={`/issues/${issue.id}`}>{issue.title}</NextLink>
                 <div className="block md:hidden">
                   <StatusBagde status={issue.status} />
                 </div>
               </Table.Cell>
               <Table.Cell className="hidden md:table-cell">
                 <StatusBagde status={issue.status} />
-              </Table.Cell>
-              <Table.Cell className="hidden md:table-cell">
-                {issue.description}
               </Table.Cell>
               <Table.Cell className="hidden md:table-cell">
                 {issue.createdAt.toDateString()}

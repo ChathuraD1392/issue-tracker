@@ -1,8 +1,5 @@
-import { Button, Table } from "@radix-ui/themes";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-import React from "react";
-import Link from "next/link";
+import { Skeleton } from "@/app/components";
+import { Table } from "@radix-ui/themes";
 import IssueActionButton from "./IssueActionButton";
 
 const LoadingIssuePage = () => {
@@ -30,7 +27,10 @@ const LoadingIssuePage = () => {
         <Table.Body>
           {issues.map((issue, index) => (
             <Table.Row key={index}>
-              <Table.Cell> <Skeleton /></Table.Cell>
+              <Table.Cell>
+                {" "}
+                <Skeleton />
+              </Table.Cell>
               <Table.Cell>
                 <Skeleton />
                 <div className="block md:hidden">

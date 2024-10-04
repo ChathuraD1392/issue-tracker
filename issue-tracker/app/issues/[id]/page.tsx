@@ -1,8 +1,9 @@
-import StatusBagde from "@/app/components/StatusBadge";
 import prisma from "@/prisma/client";
-import { Box, Card, Text } from "@radix-ui/themes";
+import { Box, Flex, Grid } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
-import React from "react";
+import DeleteIssueButton from "./DeleteIssueButton";
+import EditIssueButton from "./EditIssueButton";
+import IssueDetails from "./IssueDetails";
 
 interface Props {
   params: { id: string };
@@ -16,18 +17,17 @@ const IssueDetailPage = async ({ params: { id } }: Props) => {
 
   if (!issue) notFound();
   return (
-    <Box width="400px">
-      <Card variant="classic" className="space-y-3 bg-green-300">
-        <Text as="div" color="green" size="4" weight="bold">
-          {issue.title}
-        </Text>
-        <StatusBagde status={issue.status} />
-        <Text as="div" color="gray" size="3">
-          {issue.description}
-        </Text>
-        <Text as="p">{issue.createdAt.toDateString()}</Text>
-      </Card>
-    </Box>
+    <Grid columns={{ initial: "1", sm: "5" }} gap="2">
+      <Box className="md:col-span-4">
+        <IssueDetails issue={issue} />
+      </Box>
+      <Box>
+        <Flex direction="column" gap="3">
+          <EditIssueButton issueId={issue.id} />
+          <DeleteIssueButton issueId={issue.id} />
+        </Flex>
+      </Box>
+    </Grid>
   );
 };
 
